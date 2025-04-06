@@ -11,8 +11,9 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**") // Разрешите CORS для всех эндпоинтов /api
-                .allowedOrigins("*") // Разрешите все источники
+                .allowedOrigins("http://localhost:3000", "http://localhost:8080") // Укажите разрешенные источники
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Разрешите методы
-                .allowedHeaders("*"); // Разрешите все заголовки
+                .allowedHeaders("*") // Разрешите все заголовки
+                .allowCredentials(true); // Разрешаем передачу кук
     }
 }
