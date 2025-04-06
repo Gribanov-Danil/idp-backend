@@ -1,13 +1,17 @@
 package com.example.idpbackend.dto;
 
+import lombok.Data;
+
 import java.util.UUID;
 
+@Data
 public class CreateRepoRequest {
     private UUID userId; // ID пользователя, чей PAT будет использоваться
     private String orgName; // Название организации
     private String repoName; // Название репозитория
     private String description; // Описание репозитория
     private boolean isPrivate;
+    private String jenkinsfilePath;
 
     public UUID getUserId() {
         return userId;

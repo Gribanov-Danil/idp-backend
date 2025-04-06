@@ -57,4 +57,4 @@ volumes:
 
 networks:
   idp-network:
-    driver: bridge 
+    driver: bridge

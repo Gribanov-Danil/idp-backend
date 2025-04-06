@@ -25,6 +25,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Разрешите доступ к эндпоинтам без аутентификации
                         .requestMatchers("/api/github/**").permitAll() // Разрешите все эндпоинты /api/github
+                        .requestMatchers("/api/templates/**").permitAll() // Разрешите все эндпоинты /api/github
+                        .requestMatchers("/api/**").permitAll() // Разрешите все эндпоинты /api/github
                         .requestMatchers("/public/**").permitAll() // Разрешите все эндпоинты /public
                         // Обновленные пути для OpenAPI
                         .requestMatchers("/v3/api-docs/**", 

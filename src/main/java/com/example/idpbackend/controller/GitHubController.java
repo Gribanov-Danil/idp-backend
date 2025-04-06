@@ -22,7 +22,8 @@ public class GitHubController {
                 request.getOrgName(),
                 request.getRepoName(),
                 request.getDescription(),
-                request.isPrivate()
+                request.isPrivate(),
+                request.getJenkinsfilePath()
         );
         return ResponseEntity.ok(result);
     }

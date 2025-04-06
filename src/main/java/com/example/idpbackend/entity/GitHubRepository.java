@@ -37,6 +37,9 @@ public class GitHubRepository {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt; // Дата создания репозитория
 
+    @Column(name = "jenkinsfile_path")
+    private String jenkinsfilePath;
+
     @CreationTimestamp
     @Column(name = "saved_at", updatable = false)
     private LocalDateTime savedAt; // Дата сохранения в базу данных
@@ -83,6 +86,13 @@ public class GitHubRepository {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getJenkinsfilePath() {
+        return jenkinsfilePath;
+    }
+
+    public void setJenkinsfilePath(String jenkinsfilePath) {
+        this.jenkinsfilePath = jenkinsfilePath;
     }
 
     public boolean isPrivate() {
