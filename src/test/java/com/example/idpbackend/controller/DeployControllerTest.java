@@ -2,6 +2,7 @@ package com.example.idpbackend.controller;
 
 import com.example.idpbackend.entity.Deploy;
 import com.example.idpbackend.service.DeployService;
+import com.example.idpbackend.service.ArtifactDownloaderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,6 +11,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.mockito.ArgumentCaptor;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -32,6 +35,9 @@ class DeployControllerTest {
     @MockBean
     private DeployService deployService;
 
+    @MockBean
+    private ArtifactDownloaderService artifactDownloaderService;
+
     @Test
     void deployFrontend_success() throws Exception {
         // Задаем параметры запроса
@@ -42,6 +48,12 @@ class DeployControllerTest {
 
         // Создаем ArgumentCaptor для объекта Deploy
         ArgumentCaptor<Deploy> deployCaptor = ArgumentCaptor.forClass(Deploy.class);
+
+        // Настраиваем мок для ArtifactDownloaderService
+        // Создаем временный моковый zip-файл, чтобы у Path был реальный путь
+        Path mockZipPath = Files.createTempFile("test-", ".zip");
+        when(artifactDownloaderService.downloadArtifact(eq(jobName), eq("build.zip")))
+                .thenReturn(mockZipPath);
 
         // Настраиваем мок сервиса
         // Метод saveDeployInformation должен вызываться и возвращать Deploy
@@ -71,5 +83,8 @@ class DeployControllerTest {
         assertEquals(jobName, capturedDeploy.getJobName());
         assertEquals(repoUrl, capturedDeploy.getRepoUrl());
         assertEquals(jenkinsfilePath, capturedDeploy.getJenkinsfilePath());
+
+        // Очищаем временный файл
+        Files.deleteIfExists(mockZipPath);
     }
 } 
