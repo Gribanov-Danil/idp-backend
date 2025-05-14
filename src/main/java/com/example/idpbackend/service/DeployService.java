@@ -1,5 +1,8 @@
 package com.example.idpbackend.service;
 
+import com.example.idpbackend.entity.Deploy;
+import com.example.idpbackend.repository.DeployRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -13,6 +16,17 @@ import java.util.zip.ZipInputStream;
 
 @Service
 public class DeployService {
+
+    private final DeployRepository deployRepository;
+
+    @Autowired
+    public DeployService(DeployRepository deployRepository) {
+        this.deployRepository = deployRepository;
+    }
+
+    public Deploy saveDeployInformation(Deploy deploy) {
+        return deployRepository.save(deploy);
+    }
 
     public void deployFrontend(Path zipPath, int port) throws IOException {
         Path deployDir = Paths.get("C:/Users/Danil/frontend-apps/app-" + port);

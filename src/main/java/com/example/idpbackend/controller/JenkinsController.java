@@ -17,16 +17,9 @@ public class JenkinsController {
 
     @PostMapping("/create-pipeline")
     public ResponseEntity<String> createPipeline(@RequestBody CreatePipelineRequest request) {
-        String configXml = jenkinsService.generateJobConfigXml(
-                request.getJobName(),
-                request.getRepoUrl(),
-                request.getJenkinsfilePath(),
-                request.getVariables()
-        );
+        jenkinsService.createOrUpdateJenkinsJobAndPipeline(request);
 
-        jenkinsService.createJob(request.getJobName(), configXml);
-
-        return ResponseEntity.ok("Jenkins job created successfully!");
+        return ResponseEntity.ok("Jenkins job created/updated and pipeline info saved successfully!");
     }
 
     @PostMapping("/trigger-pipeline")

@@ -1,5 +1,6 @@
 package com.example.idpbackend.controller;
 
+import com.example.idpbackend.entity.Deploy;
 import com.example.idpbackend.service.DeployService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,9 @@ public class DeployController {
     @PostMapping("/frontend")
     public ResponseEntity<String> deployFrontend(
             @RequestParam int port,
-            @RequestParam String jobName
+            @RequestParam String jobName,
+            @RequestParam String repoUrl,
+            @RequestParam String jenkinsfilePath
     ) throws IOException {
         // Загружаем build.zip из Jenkins (можно через JenkinsService)
         String artifactUrl = "http://localhost:9090/job/" + jobName + "/lastSuccessfulBuild/artifact/build.zip";
@@ -40,7 +43,11 @@ public class DeployController {
             Files.copy(in, tempZip, StandardCopyOption.REPLACE_EXISTING);
         }
 
+        // Сохранение информации о деплое
+        Deploy deployInfo = new Deploy(port, jobName, repoUrl, jenkinsfilePath);
+        deployService.saveDeployInformation(deployInfo);
+
         deployService.deployFrontend(tempZip, port);
-        return ResponseEntity.ok("Frontend развернут на порту: " + port);
+        return ResponseEntity.ok("Frontend развернут на порту: " + port + ". Информация о деплое сохранена.");
     }
 }
